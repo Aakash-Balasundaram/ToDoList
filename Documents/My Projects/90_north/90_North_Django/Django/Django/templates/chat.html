@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Application</title>
+    <script>
+        const ws = new WebSocket(`ws://${window.location.host}/ws/chat/${other_user}/`);
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += `<div><b>${data.sender}:</b> ${data.message}</div>`;
+        };
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            ws.send(JSON.stringify({ message: input.value }));
+            input.value = '';
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div id="user-list">
+            <!-- Dynamically load user list here -->
+        </div>
+        <div id="chat-interface">
+            <div id="chat-box"></div>
+            <input type="text" id="message-input">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</body>
+</html>
